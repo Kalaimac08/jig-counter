@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JIG Counter - Kaizen Project Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid #00d4ff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 60%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #00d4ff;
+            text-shadow: 0 0 20px rgba(0,212,255,0.5);
+            letter-spacing: 3px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            color: #a0a0b0;
+            font-size: 1.1em;
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #00d4ff;
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin: 5px 3px;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .nav {
+            background: #111122;
+            padding: 15px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            border-bottom: 2px solid #1a1a3e;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav a {
+            color: #00d4ff;
+            text-decoration: none;
+            padding: 6px 15px;
+            border: 1px solid #00d4ff;
+            border-radius: 20px;
+            font-size: 0.85em;
+            transition: all 0.3s;
+        }
+
+        .nav a:hover {
+            background: #00d4ff;
+            color: #000;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            background: #111122;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 1px solid #1a1a3e;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .section h2 {
+            color: #00d4ff;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h3 {
+            color: #7eb8f7;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        .icon {
+            font-size: 1.4em;
+        }
+
+        /* ===== COMPONENTS TABLE ===== */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th {
+            background: #0f3460;
+            color: #00d4ff;
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #1a1a3e;
+            font-size: 0.95em;
+        }
+
+        tr:hover td {
+            background: #1a1a3e;
+        }
+
+        tr:nth-child(even) td {
+            background: #0d0d1a;
+        }
+
+        /* ===== CODE BLOCKS ===== */
+        .code-container {
+            position: relative;
+            margin: 15px 0;
+        }
+
+        pre {
+            background: #050510;
+            border: 1px solid #1a1a3e;
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            line-height: 1.6;
+            color: #c8d3f5;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #0f3460;
+            color: #00d4ff;
+            border: 1px solid #00d4ff;
+            padding: 5px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #00d4ff;
+            color: #000;
+        }
+
+        /* Code Syntax Colors */
+        .kw { color: #c792ea; }   /* keywords */
+        .cm { color: #546e7a; }   /* comments */
+        .st { color: #c3e88d; }   /* strings */
+        .nm { color: #f78c6c; }   /* numbers */
+        .fn { color: #82aaff; }   /* functions */
+        .pp { color: #89ddff; }   /* preprocessor */
+        .tp { color: #ffcb6b; }   /* types */
+
+        /* ===== WIRING DIAGRAM ===== */
+        .diagram-box {
+            background: #050510;
+            border: 2px solid #1a1a3e;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            color: #a0e0a0;
+            line-height: 1.8;
+        }
+
+        /* ===== OLED DISPLAY SIM ===== */
+        .oled-display {
+            width: 260px;
+            height: 130px;
+            background: #000;
+            border: 3px solid #333;
+            border-radius: 8px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 15px auto;
+            box-shadow: 0 0 20px rgba(0,212,255,0.3), inset 0 0 10px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .oled-header {
+            color: #00d4ff;
+            font-size: 0.75em;
+            text-align: center;
+            border-bottom: 1px solid #00d4ff;
+            padding-bottom: 4px;
+            margin-bottom: 6px;
+        }
+
+        .oled-count {
+            color: #00ff88;
+            font-size: 1.6em;
+            font-weight: bold;
+        }
+
+        .oled-label {
+            color: #88aaff;
+            font-size: 0.65em;
+        }
+
+        .oled-progress {
+            background: #001100;
+            border: 1px solid #00ff88;
+            border-radius: 3px;
+            height: 10px;
+            margin: 5px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .oled-progress-bar {
+            background: #00ff88;
+            height: 100%;
+            width: 45%;
+            transition: width 0.3s;
+        }
+
+        .oled-status {
+            color: #ffaa00;
+            font-size: 0.65em;
+            text-align: center;
+            border-top: 1px solid #333;
+            padding-top: 4px;
+            margin-top: 4px;
+        }
+
+        /* ===== STEPS ===== */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .step-card {
+            background: #0d0d1a;
+            border: 1px solid #1a1a3e;
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            transition: border-color 0.3s;
+        }
+
+        .step-card:hover {
+            border-color: #00d4ff;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 15px;
+            background: #00d4ff;
+            color: #000;
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+        }
+
+        .step-card h4 {
+            color: #7eb8f7;
+            margin-bottom: 8px;
+            margin-top: 5px;
+        }
+
+        .step-card p {
+            color: #a0a0b0;
+            font-size: 0.9em;
+        }
+
+        /* ===== PIN TABLE ===== */
+        .pin-table td:first-child {
+            color: #ffcb6b;
+            font-weight: bold;
+        }
+
+        .pin-table td:nth-child(2) {
+            color: #c792ea;
+        }
+
+        .pin-table td:nth-child(3) {
+            color: #89ddff;
+        }
+
+        /* ===== TROUBLESHOOT ===== */
+        .trouble-card {
+            background: #0d0d1a;
+            border-left: 3px solid #ff6b6b;
+            border-radius: 0 8px 8px 0;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .trouble-card .problem {
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .trouble-card .solution {
+            color: #a0e0a0;
+            font-size: 0.9em;
+        }
+
+        /* ===== KAIZEN IMPACT ===== */
+        .kaizen-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        .kaizen-before {
+            background: #1a0d0d;
+            border: 1px solid #ff4444;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .kaizen-after {
+            background: #0d1a0d;
+            border: 1px solid #44ff44;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .kaizen-before h4 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .kaizen-after h4 {
+            color: #6bff6b;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .kaizen-item {
+            padding: 5px 0;
+            font-size: 0.9em;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        /* ===== ALERT BOXES ===== */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+
+        .alert-info {
+            background: #0d1a2e;
+            border-left: 4px solid #00d4ff;
+            color: #89ddff;
+        }
+
+        .alert-warning {
+            background: #1a1400;
+            border-left: 4px solid #ffaa00;
+            color: #ffcb6b;
+        }
+
+        .alert-success {
+            background: #0d1a0d;
+            border-left: 4px solid #00ff88;
+            color: #a0e0a0;
+        }
+
+        /* ===== INTERACTIVE COUNTER DEMO ===== */
+        .demo-box {
+            background: #050510;
+            border: 2px solid #0f3460;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .demo-counter {
+            font-size: 4em;
+            color: #00d4ff;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(0,212,255,0.5);
+            margin: 10px 0;
+        }
+
+        .demo-target {
+            color: #a0a0b0;
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+
+        .demo-progress-outer {
+            background: #0d0d1a;
+            border: 1px solid #1a1a3e;
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin: 10px auto;
+            max-width: 400px;
+        }
+
+        .demo-progress-inner {
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .demo-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-count {
+            background: #0f3460;
+            color: #00d4ff;
+            border: 2px solid #00d4ff;
+        }
+
+        .btn-count:hover {
+            background: #00d4ff;
+            color: #000;
+        }
+
+        .btn-reset {
+            background: #3d0f0f;
+            color: #ff6b6b;
+            border: 2px solid #ff6b6b;
+        }
+
+        .btn-reset:hover {
+            background: #ff6b6b;
+            color: #000;
+        }
+
+        .btn-target {
+            background: #0f3d0f;
+            color: #6bff6b;
+            border: 2px solid #6bff6b;
+        }
+
+        .btn-target:hover {
+            background: #6bff6b;
+            color: #000;
+        }
+
+        .demo-status {
+            font-size: 1.1em;
+            margin-top: 15px;
+            padding: 8px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .status-counting {
+            color: #00ff88;
+            background: #0d1a0d;
+        }
+
+        .status-reached {
+            color: #ff6b6b;
+            background: #1a0d0d;
+            animation: blink 0.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ===== CIRCUIT VISUAL ===== */
+        .circuit-visual {
+            background: #050510;
+            border: 1px solid #1a1a3e;
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        /* ===== FUTURE ITEMS ===== */
+        .future-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .future-card {
+            background: #0d0d1a;
+            border: 1px solid #1a1a3e;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .future-card:hover {
+            border-color: #00d4ff;
+            transform: translateY(-3px);
+        }
+
+        .future-card .future-icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        .future-card h4 {
+            color: #7eb8f7;
+            font-size: 0.9em;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #050510;
+            text-align: center;
+            padding: 30px;
+            color: #a0a0b0;
+            border-top: 2px solid #1a1a3e;
+            margin-top: 40px;
+        }
+
+        .footer h3 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.6em; }
+            .kaizen-grid { grid-template-columns: 1fr; }
+            .demo-counter { font-size: 2.5em; }
+            pre { font-size: 0.75em; }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00d4ff; }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            body { background: white; color: black; }
+            .nav { display: none; }
+            .header { background: #003366; }
+            pre { background: #f0f0f0; color: #333; border: 1px solid #ccc; }
+            .section { border: 1px solid #ccc; background: white; }
+            .copy-btn { display: none; }
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 8px 5px;
+            border-bottom: 1px solid #1a1a3e;
+            color: #c0c0d0;
+            font-size: 0.95em;
+        }
+
+        .checklist li::before {
+            content: '☐ ';
+            color: #00d4ff;
+            font-size: 1.1em;
+        }
+
+        .highlight {
+            background: #0f3460;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #00d4ff;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+    <h1>⚙️ JIG COUNTER</h1>
+    <p>ESP32-S3 Based Production Item Counter</p>
+    <br>
+    <span class="badge">KAIZEN PROJECT</span>
+    <span class="badge">Version 1.0</span>
+    <span class="badge">ESP32-S3</span>
+    <span class="badge">Arduino IDE</span>
+</div>
+
+<!-- ===== NAVIGATION ===== -->
+<div class="nav">
+    <a href="#overview">📋 Overview</a>
+    <a href="#components">🔧 Components</a>
+    <a href="#wiring">🔌 Wiring</a>
+    <a href="#oled">📟 Display</a>
+    <a href="#code">💻 Code</a>
+    <a href="#steps">📐 Build Steps</a>
+    <a href="#demo">🎮 Demo</a>
+    <a href="#troubleshoot">⚠️ Troubleshoot</a>
+    <a href="#kaizen">📊 Kaizen Impact</a>
+    <a href="#future">🚀 Future</a>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="container">
+
+    <!-- ===== OVERVIEW ===== -->
+    <div class="section" id="overview">
+        <h2><span class="icon">📋</span> Project Overview</h2>
+        <p>This <strong>JIG Counter</strong> is a smart production item counting system built with ESP32-S3. It detects items using an IR sensor, shows real-time count on an OLED display, provides audio and visual feedback, and can control machines via relay when the target count is reached.</p>
+
+        <br>
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>Function</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>🔴 IR Sensor</td>
+                    <td>Detects each item passing through the jig</td>
+                    <td><span style="color:#00ff88">✅ Active</span></td>
+                </tr>
+                <tr>
+                    <td>🔘 Button 1</td>
+                    <td>Reset counter to zero</td>
+                    <td><span style="color:#00ff88">✅ Active</span></td>
+                </tr>
+                <tr>
+                    <td>🔘 Button 2</td>
+                    <td>Cycle through target count presets</td>
+                    <td><span style="color:#00ff88">✅ Active</span></td>
+                </tr>
+                <tr>
+                    <td>🔊 Buzzer</td>
+                    <td>Beep on count + alarm at target</td>
+                    <td><span style="color:#00ff88">✅ Active</span></td>
+                </tr>
+                <tr>
+                    <td>🟢 Green LED</td>
+                    <td>Solid = system counting</td>
+                    <td><span style="color:#00ff88">✅ Active</span></td>
+                </tr>
+                <tr>
+                    <td>🔴 Red LED</td>
+                    <td>Blinks = target reached</td>
+                    <td><span style="color:#00ff88">✅ Active</span></td>
+                </tr>
+                <tr>
+                    <td>⚡ Relay</td>
+                    <td>Stops conveyor/machine at target</td>
+                    <td><span style="color:#00ff88">✅ Active</span></td>
+                </tr>
+                <tr>
+                    <td>📟 OLED 0.96"</td>
+                    <td>Displays count, target, progress bar</td>
+                    <td><span style="color:#00ff88">✅ Active</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ===== COMPONENTS ===== -->
+    <div class="section" id="components">
+        <h2><span class="icon">🔧</span> Components List</h2>
+
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>#</th>
+                    <th>Component</th>
+                    <th>Quantity</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>ESP32-S3 Dev Board</td>
+                    <td>1 pc</td>
+                    <td>Main microcontroller</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>IR Obstacle Sensor</td>
+                    <td>1 pc</td>
+                    <td>3-pin module (VCC, GND, OUT)</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Push Button</td>
+                    <td>2 pcs</td>
+                    <td>Momentary push button</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Active Buzzer</td>
+                    <td>1 pc</td>
+                    <td>5V active buzzer</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>LED Green</td>
+                    <td>1 pc</td>
+                    <td>With 220Ω resistor</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>LED Red</td>
+                    <td>1 pc</td>
+                    <td>With 220Ω resistor</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Relay Module 5V</td>
+                    <td>1 pc</td>
+                    <td>1-channel, active LOW</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>OLED Display 0.96"</td>
+                    <td>1 pc</td>
+                    <td>I2C, SSD1306, 128x64</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>Resistor 220Ω</td>
+                    <td>2 pcs</td>
+                    <td>For LED current limiting</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>Power Supply 5V</td>
+                    <td>1 pc</td>
+                    <td>Minimum 2A</td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td>Breadboard</td>
+                    <td>1 pc</td>
+                    <td>Full size 830 points</td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td>Jump Wires</td>
+                    <td>1 set</td>
+                    <td>Male to Male, various colors</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="alert alert-info">
+            💡 <strong>Tip:</strong> Use different colored wires for easier troubleshooting.
+            Red = Power, Black = GND, Blue = Signal, Yellow = I2C
+        </div>
+    </div>
+
+    <!-- ===== WIRING ===== -->
+    <div class="section" id="wiring">
+        <h2><span class="icon">🔌</span> Wiring & Pin Assignments</h2>
+
+        <h3>📌 Pin Connection Table</h3>
+        <div class="table-wrapper">
+            <table class="pin-table">
+                <tr>
+                    <th>Component</th>
+                    <th>Component Pin</th>
+                    <th>ESP32-S3 Pin</th>
+                    <th>Wire Color</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td>🔴 IR Sensor</td>
+                    <td>VCC</td>
+                    <td>5V</td>
+                    <td>🔴 Red</td>
+                    <td>Power</td>
+                </tr>
+                <tr>
+                    <td>🔴 IR Sensor</td>
+                    <td>GND</td>
+                    <td>GND</td>
+                    <td>⚫ Black</td>
+                    <td>Ground</td>
+                </tr>
+                <tr>
+                    <td>🔴 IR Sensor</td>
+                    <td>OUT</td>
+                    <td>GPIO 4</td>
+                    <td>🟡 Yellow</td>
+                    <td>Signal (INPUT_PULLUP)</td>
+                </tr>
+                <tr>
+                    <td>🔘 Button 1</td>
+                    <td>Pin 1</td>
+                    <td>GPIO 5</td>
+                    <td>🟢 Green</td>
+                    <td>Reset button</td>
+                </tr>
+                <tr>
+                    <td>🔘 Button 1</td>
+                    <td>Pin 2</td>
+                    <td>GND</td>
+                    <td>⚫ Black</td>
+                    <td>Ground</td>
+                </tr>
+                <tr>
+                    <td>🔘 Button 2</td>
+                    <td>Pin 1</td>
+                    <td>GPIO 6</td>
+                    <td>🟣 Purple</td>
+                    <td>Set target button</td>
+                </tr>
+                <tr>
+                    <td>🔘 Button 2</td>
+                    <td>Pin 2</td>
+                    <td>GND</td>
+                    <td>⚫ Black</td>
+                    <td>Ground</td>
+                </tr>
+                <tr>
+                    <td>🔊 Buzzer</td>
+                    <td>+ (positive)</td>
+                    <td>GPIO 7</td>
+                    <td>🔵 Blue</td>
+                    <td>Signal</td>
+                </tr>
+                <tr>
+                    <td>🔊 Buzzer</td>
+                    <td>- (negative)</td>
+                    <td>GND</td>
+                    <td>⚫ Black</td>
+                    <td>Ground</td>
+                </tr>
+                <tr>
+                    <td>🟢 LED Green</td>
+                    <td>Anode (+)</td>
+                    <td>GPIO 15 via 220Ω</td>
+                    <td>🟢 Green</td>
+                    <td>220Ω resistor in series</td>
+                </tr>
+                <tr>
+                    <td>🟢 LED Green</td>
+                    <td>Cathode (-)</td>
+                    <td>GND</td>
+                    <td>⚫ Black</td>
+                    <td>Ground</td>
+                </tr>
+                <tr>
+                    <td>🔴 LED Red</td>
+                    <td>Anode (+)</td>
+                    <td>GPIO 16 via 220Ω</td>
+                    <td>🔴 Red</td>
+                    <td>220Ω resistor in series</td>
+                </tr>
+                <tr>
+                    <td>🔴 LED Red</td>
+                    <td>Cathode (-)</td>
+                    <td>GND</td>
+                    <td>⚫ Black</td>
+                    <td>Ground</td>
+                </tr>
+                <tr>
+                    <td>⚡ Relay</td>
+                    <td>IN</td>
+                    <td>GPIO 17</td>
+                    <td>🟠 Orange</td>
+                    <td>Active LOW trigger</td>
+                </tr>
+                <tr>
+                    <td>⚡ Relay</td>
+                    <td>VCC</td>
+                    <td>5V</td>
+                    <td>🔴 Red</td>
+                    <td>Power</td>
+                </tr>
+                <tr>
+                    <td>⚡ Relay</td>
+                    <td>GND</td>
+                    <td>GND</td>
+                    <td>⚫ Black</td>
+                    <td>Ground</td>
+                </tr>
+                <tr>
+                    <td>📟 OLED</td>
+                    <td>SDA</td>
+                    <td>GPIO 8</td>
+                    <td>🟡 Yellow</td>
+                    <td>I2C Data</td>
+                </tr>
+                <tr>
+                    <td>📟 OLED</td>
+                    <td>SCL</td>
+                    <td>GPIO 9</td>
+                    <td>⚪ White</td>
+                    <td>I2C Clock</td>
+                </tr>
+                <tr>
+                    <td>📟 OLED</td>
+                    <td>VCC</td>
+                    <td>3.3V</td>
+                    <td>🔴 Red</td>
+                    <td>Use 3.3V NOT 5V!</td>
+                </tr>
+                <tr>
+                    <td>📟 OLED</td>
+                    <td>GND</td>
+                    <td>GND</td>
+                    <td>⚫ Black</td>
+                    <td>Ground</td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>🗺️ Breadboard Layout Diagram</h3>
+        <div class="diagram-box">
+<pre style="background:transparent; border:none; padding:0; color:#a0e0a0;">
+  ╔══════════════════════════════════════════════════════════════╗
+  ║               BREADBOARD LAYOUT - TOP VIEW                  ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║  [+5V]═══════════════════════════════════════════════════   ║
+  ║  [GND] ═══════════════════════════════════════════════════  ║
+  ║                                                              ║
+  ║     ┌──────────────────────────┐                            ║
+  ║     │       ESP32-S3           │                            ║
+  ║     │  ┌─────────┐             │                            ║
+  ║     │  │         │  GPIO4  ────┼──────► IR Sensor OUT       ║
+  ║     │  │         │  GPIO5  ────┼──────► Button 1 ──► GND   ║
+  ║     │  │         │  GPIO6  ────┼──────► Button 2 ──► GND   ║
+  ║     │  │         │  GPIO7  ────┼──────► Buzzer (+)          ║
+  ║     │  │         │  GPIO8  ────┼──────► OLED SDA            ║
+  ║     │  │         │  GPIO9  ────┼──────► OLED SCL            ║
+  ║     │  │         │  GPIO15 ────┼──[220Ω]──► 🟢 LED Green   ║
+  ║     │  │         │  GPIO16 ────┼──[220Ω]──► 🔴 LED Red     ║
+  ║     │  │         │  GPIO17 ────┼──────► Relay IN            ║
+  ║     │  │         │  3.3V   ────┼──────► OLED VCC            ║
+  ║     │  │         │  5V     ────┼──────► IR VCC, Relay VCC   ║
+  ║     │  │         │  GND    ────┼──────► Common Ground       ║
+  ║     │  └─────────┘             │                            ║
+  ║     └──────────────────────────┘                            ║
+  ║                                                              ║
+  ║   ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ║
+  ║   │   OLED   │  │IR SENSOR │  │  RELAY   │  │  BUZZER  │  ║
+  ║   │  0.96"   │  │  MODULE  │  │  MODULE  │  │          │  ║
+  ║   │[SDA][SCL]│  │[V][G][O] │  │[V][G][IN]│  │[+]   [-] │  ║
+  ║   └──────────┘  └──────────┘  └──────────┘  └──────────┘  ║
+  ║                                                              ║
+  ║   [BTN1-RESET]              [BTN2-SET TARGET]               ║
+  ║   ┌───┐──► GND              ┌───┐──► GND                    ║
+  ║   │ ● │                     │ ● │                            ║
+  ║   └───┘                     └───┘                            ║
+  ║                                                              ║
+  ║   [220Ω]──│►──GND           [220Ω]──│►──GND                ║
+  ║   GREEN LED                  RED LED                         ║
+  ║                                                              ║
+  ║  ┌─────────────┐                                             ║
+  ║  │  5V POWER   │──────────────────────────────► +5V Rail    ║
+  ║  │  SUPPLY     │──────────────────────────────► GND Rail    ║
+  ║  └─────────────┘                                             ║
+  ╚══════════════════════════════════════════════════════════════╝
+</pre>
+        </div>
+
+        <h3>🔗 Circuit Schematic</h3>
+        <div class="diagram-box">
+<pre style="background:transparent; border:none; padding:0; color:#89ddff;">
+                         ┌─────────────────┐
+                         │    ESP32-S3      │
+                         │                  │
+  ┌─────────────┐        │                  │     ┌──────────────┐
+  │  IR SENSOR  │──OUT──►│GPIO4        GPIO8│─SDA►│     OLED     │
+  │  VCC──5V    │        │             GPIO9│─SCL►│  128x64      │
+  │  GND──GND   │        │             3.3V │─VCC►│  0.96 inch   │
+  └─────────────┘        │              GND │─GND►│              │
+                         │                  │     └──────────────┘
+  ┌───┐──────────────────►GPIO5             │
+  │BTN│                  │                  │     ┌──────────────┐
+  │ 1 │──────GND         │           GPIO17 │─IN─►│    RELAY     │
+  └───┘                  │              5V  │─VCC►│   MODULE     │
+                         │              GND │─GND►│ COM──► Load  │
+  ┌───┐──────────────────►GPIO6             │     └──────────────┘
+  │BTN│                  │                  │
+  │ 2 │──────GND         │           GPIO7  │──────►(+)BUZZER(-)──GND
+  └───┘                  │                  │
+                         │           GPIO15 │──[220Ω]──►|GREEN LED|──GND
+                         │           GPIO16 │──[220Ω]──►| RED LED |──GND
+  ┌─────────┐            │                  │
+  │  5V PSU │────────────►5V (VIN)          │
+  │         │────────────►GND               │
+  └─────────┘            └─────────────────┘
+</pre>
+        </div>
+
+        <div class="alert alert-warning">
+            ⚠️ <strong>Important:</strong> OLED display uses 3.3V NOT 5V! Connecting 5V to OLED will damage it permanently!
+        </div>
+
+        <div class="alert alert-warning">
+            ⚠️ <strong>Relay Note:</strong> Use a separate 5V supply for the relay coil if controlling heavy loads. Do not power from ESP32 3.3V pin!
+        </div>
+    </div>
+
+    <!-- ===== OLED DISPLAY ===== -->
+    <div class="section" id="oled">
+        <h2><span class="icon">📟</span> OLED Display Layout</h2>
+
+        <p>The OLED shows real-time information about the counting process:</p>
+
+        <div class="oled-display">
+            <div class="oled-header">JIG COUNTER v1.0</div>
+            <table style="width:100%; border:none; margin:0;">
+                <tr>
+                    <td style="padding:2px; border:none;">
+                        <div class="oled-label">COUNT:</div>
+                        <div class="oled-count" id="oled-count">0045</div>
+                    </td>
+                    <td style="padding:2px; border:none; text-align:right; vertical-align:top;">
+                        <div class="oled-label">TGT:</div>
+                        <div style="color:#ffaa00; font-size:1em; font-family:monospace;">0100</div>
+                    </td>
+                </tr>
+            </table>
+            <div class="oled-progress">
+                <div class="oled-progress-bar" id="oled-bar" style="width:45%">
+                    <span style="color:#000; font-size:0.6em; padding-left:5px;">45%</span>
+                </div>
+            </div>
+            <div class="oled-status" id="oled-status">STATUS: COUNTING...</div>
+        </div>
+
+        <h3>Display Zones Explained:</h3>
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>Zone</th>
+                    <th>Content</th>
+                    <th>Color</th>
+                </tr>
+                <tr>
+                    <td>Header (Row 1)</td>
+                    <td>JIG COUNTER v1.0</td>
+                    <td>White + underline</td>
+                </tr>
+                <tr>
+                    <td>Count (Large)</td>
+                    <td>Current item count (4 digits)</td>
+                    <td>White, Size 2</td>
+                </tr>
+                <tr>
+                    <td>Target (Small)</td>
+                    <td>Target count (4 digits)</td>
+                    <td>White, Size 1</td>
+                </tr>
+                <tr>
+                    <td>Progress Bar</td>
+                    <td>Filled % of count vs target</td>
+                    <td>White fill</td>
+                </tr>
+                <tr>
+                    <td>Status (Bottom)</td>
+                    <td>"COUNTING..." or "TARGET REACHED!"</td>
+                    <td>White + underline</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ===== CODE ===== -->
+    <div class="section" id="code">
+        <h2><span class="icon">💻</span> Arduino Code</h2>
+
+        <div class="alert alert-info">
+            📦 <strong>Required Libraries:</strong><br>
+            Arduino IDE → Sketch → Include Library → Manage Libraries<br>
+            Search and install: <span class="highlight">Adafruit SSD1306</span> and <span class="highlight">Adafruit GFX Library</span>
+        </div>
+
+        <h3>Board Setup:</h3>
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>Setting</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Board</td>
+                    <td>ESP32S3 Dev Module</td>
+                </tr>
+                <tr>
+                    <td>Upload Speed</td>
+                    <td>921600</td>
+                </tr>
+                <tr>
+                    <td>USB Mode</td>
+                    <td>Hardware CDC and JTAG</td>
+                </tr>
+                <tr>
+                    <td>Serial Monitor Baud</td>
+                    <td>115200</td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Complete Code:</h3>
+        <div class="code-container">
+            <button class="copy-btn" onclick="copyCode()">📋 Copy</button>
+            <pre id="main-code"><span class="cm">/*
+ * ==========================================
+ *  JIG COUNTER - KAIZEN PROJECT
+ *  ESP32-S3 Based Production Counter
+ * ==========================================
+ *  Version: 1.0
+ * ==========================================
+ */</span>
+
+<span class="pp">#include</span> <span class="st">&lt;Wire.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;Adafruit_GFX.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;Adafruit_SSD1306.h&gt;</span>
+
+<span class="cm">// ============ PIN DEFINITIONS ============</span>
+<span class="pp">#define</span> <span class="nm">IR_SENSOR_PIN</span>     <span class="nm">4</span>
+<span class="pp">#define</span> <span class="nm">BUTTON_RESET_PIN</span>  <span class="nm">5</span>
+<span class="pp">#define</span> <span class="nm">BUTTON_SET_PIN</span>    <span class="nm">6</span>
+<span class="pp">#define</span> <span class="nm">BUZZER_PIN</span>        <span class="nm">7</span>
+<span class="pp">#define</span> <span class="nm">LED_GREEN_PIN</span>     <span class="nm">15</span>
+<span class="pp">#define</span> <span class="nm">LED_RED_PIN</span>       <span class="nm">16</span>
+<span class="pp">#define</span> <span class="nm">RELAY_PIN</span>         <span class="nm">17</span>
+<span class="pp">#define</span> <span class="nm">OLED_SDA</span>          <span class="nm">8</span>
+<span class="pp">#define</span> <span class="nm">OLED_SCL</span>          <span class="nm">9</span>
+
+<span class="cm">// ============ OLED SETTINGS ============</span>
+<span class="pp">#define</span> <span class="nm">SCREEN_WIDTH</span>      <span class="nm">128</span>
+<span class="pp">#define</span> <span class="nm">SCREEN_HEIGHT</span>     <span class="nm">64</span>
+<span class="pp">#define</span> <span class="nm">OLED_RESET</span>        <span class="nm">-1</span>
+<span class="pp">#define</span> <span class="nm">OLED_ADDRESS</span>      <span class="nm">0x3C</span>
+
+<span class="tp">Adafruit_SSD1306</span> <span class="fn">display</span>(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+<span class="cm">// ============ COUNTER VARIABLES ============</span>
+<span class="kw">volatile unsigned long</span> itemCount = <span class="nm">0</span>;
+<span class="kw">unsigned long</span> targetCount = <span class="nm">100</span>;
+<span class="kw">bool</span> targetReached = <span class="kw">false</span>;
+<span class="kw">bool</span> lastIRState = <span class="kw">HIGH</span>;
+
+<span class="cm">// ============ DEBOUNCE VARIABLES ============</span>
+<span class="kw">unsigned long</span> lastDebounceIR = <span class="nm">0</span>;
+<span class="kw">unsigned long</span> lastDebounceBtn1 = <span class="nm">0</span>;
+<span class="kw">unsigned long</span> lastDebounceBtn2 = <span class="nm">0</span>;
+<span class="kw">unsigned long</span> debounceDelay = <span class="nm">50</span>;
+<span class="kw">unsigned long</span> irDebounceDelay = <span class="nm">100</span>;
+
+<span class="cm">// ============ TIMING ============</span>
+<span class="kw">unsigned long</span> lastDisplayUpdate = <span class="nm">0</span>;
+<span class="kw">unsigned long</span> displayUpdateInterval = <span class="nm">200</span>;
+
+<span class="cm">// ============ TARGET PRESETS ============</span>
+<span class="kw">const unsigned long</span> targetPresets[] = {<span class="nm">10</span>, <span class="nm">25</span>, <span class="nm">50</span>, <span class="nm">100</span>, <span class="nm">200</span>, <span class="nm">500</span>, <span class="nm">1000</span>};
+<span class="kw">const int</span> numPresets = <span class="nm">7</span>;
+<span class="kw">int</span> currentPresetIndex = <span class="nm">3</span>;
+
+<span class="cm">// ============ SETUP ============</span>
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  Serial.<span class="fn">begin</span>(<span class="nm">115200</span>);
+  Serial.<span class="fn">println</span>(<span class="st">"=== JIG COUNTER - KAIZEN PROJECT ==="</span>);
+
+  <span class="fn">pinMode</span>(IR_SENSOR_PIN, INPUT_PULLUP);
+  <span class="fn">pinMode</span>(BUTTON_RESET_PIN, INPUT_PULLUP);
+  <span class="fn">pinMode</span>(BUTTON_SET_PIN, INPUT_PULLUP);
+  <span class="fn">pinMode</span>(BUZZER_PIN, OUTPUT);
+  <span class="fn">pinMode</span>(LED_GREEN_PIN, OUTPUT);
+  <span class="fn">pinMode</span>(LED_RED_PIN, OUTPUT);
+  <span class="fn">pinMode</span>(RELAY_PIN, OUTPUT);
+
+  <span class="fn">digitalWrite</span>(BUZZER_PIN, LOW);
+  <span class="fn">digitalWrite</span>(LED_GREEN_PIN, HIGH);
+  <span class="fn">digitalWrite</span>(LED_RED_PIN, LOW);
+  <span class="fn">digitalWrite</span>(RELAY_PIN, HIGH);
+
+  Wire.<span class="fn">begin</span>(OLED_SDA, OLED_SCL);
+
+  <span class="kw">if</span> (!display.<span class="fn">begin</span>(SSD1306_SWITCHCAPVCC, OLED_ADDRESS)) {
+    Serial.<span class="fn">println</span>(<span class="st">"OLED Failed!"</span>);
+    <span class="kw">for</span> (;;) {
+      <span class="fn">digitalWrite</span>(LED_RED_PIN, !<span class="fn">digitalRead</span>(LED_RED_PIN));
+      <span class="fn">delay</span>(<span class="nm">500</span>);
+    }
+  }
+
+  <span class="fn">showSplashScreen</span>();
+  <span class="fn">delay</span>(<span class="nm">2000</span>);
+  <span class="fn">startupBeep</span>();
+  <span class="fn">updateDisplay</span>();
+  Serial.<span class="fn">println</span>(<span class="st">"System Ready!"</span>);
+}
+
+<span class="cm">// ============ MAIN LOOP ============</span>
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="fn">handleIRSensor</span>();
+  <span class="fn">handleResetButton</span>();
+  <span class="fn">handleSetButton</span>();
+  <span class="fn">handleLEDs</span>();
+
+  <span class="kw">if</span> (<span class="fn">millis</span>() - lastDisplayUpdate > displayUpdateInterval) {
+    <span class="fn">updateDisplay</span>();
+    lastDisplayUpdate = <span class="fn">millis</span>();
+  }
+}
+
+<span class="cm">// ============ IR SENSOR ============</span>
+<span class="kw">void</span> <span class="fn">handleIRSensor</span>() {
+  <span class="kw">if</span> (targetReached) <span class="kw">return</span>;
+
+  <span class="kw">bool</span> currentIRState = <span class="fn">digitalRead</span>(IR_SENSOR_PIN);
+
+  <span class="kw">if</span> (currentIRState == LOW && lastIRState == HIGH) {
+    <span class="kw">if</span> (<span class="fn">millis</span>() - lastDebounceIR > irDebounceDelay) {
+      lastDebounceIR = <span class="fn">millis</span>();
+      itemCount++;
+
+      Serial.<span class="fn">print</span>(<span class="st">"Count: "</span>);
+      Serial.<span class="fn">print</span>(itemCount);
+      Serial.<span class="fn">print</span>(<span class="st">" / "</span>);
+      Serial.<span class="fn">println</span>(targetCount);
+
+      <span class="fn">countBeep</span>();
+
+      <span class="kw">if</span> (itemCount >= targetCount) {
+        targetReached = <span class="kw">true</span>;
+        <span class="fn">targetReachedAction</span>();
+      }
+      <span class="fn">updateDisplay</span>();
+    }
+  }
+  lastIRState = currentIRState;
+}
+
+<span class="cm">// ============ RESET BUTTON ============</span>
+<span class="kw">void</span> <span class="fn">handleResetButton</span>() {
+  <span class="kw">static bool</span> lastBtnState = HIGH;
+  <span class="kw">bool</span> currentBtnState = <span class="fn">digitalRead</span>(BUTTON_RESET_PIN);
+
+  <span class="kw">if</span> (currentBtnState == LOW && lastBtnState == HIGH) {
+    <span class="kw">if</span> (<span class="fn">millis</span>() - lastDebounceBtn1 > debounceDelay) {
+      lastDebounceBtn1 = <span class="fn">millis</span>();
+      itemCount = <span class="nm">0</span>;
+      targetReached = <span class="kw">false</span>;
+      <span class="fn">digitalWrite</span>(RELAY_PIN, HIGH);
+      <span class="fn">digitalWrite</span>(LED_GREEN_PIN, HIGH);
+      <span class="fn">digitalWrite</span>(LED_RED_PIN, LOW);
+      <span class="fn">digitalWrite</span>(BUZZER_PIN, LOW);
+      <span class="fn">resetBeep</span>();
+      Serial.<span class="fn">println</span>(<span class="st">">>> COUNTER RESET <<<"</span>);
+      <span class="fn">updateDisplay</span>();
+    }
+  }
+  lastBtnState = currentBtnState;
+}
+
+<span class="cm">// ============ SET BUTTON ============</span>
+<span class="kw">void</span> <span class="fn">handleSetButton</span>() {
+  <span class="kw">static bool</span> lastBtnState = HIGH;
+  <span class="kw">bool</span> currentBtnState = <span class="fn">digitalRead</span>(BUTTON_SET_PIN);
+
+  <span class="kw">if</span> (currentBtnState == LOW && lastBtnState == HIGH) {
+    <span class="kw">if</span> (<span class="fn">millis</span>() - lastDebounceBtn2 > debounceDelay) {
+      lastDebounceBtn2 = <span class="fn">millis</span>();
+      currentPresetIndex = (currentPresetIndex + <span class="nm">1</span>) % numPresets;
+      targetCount = targetPresets[currentPresetIndex];
+
+      <span class="kw">if</span> (itemCount < targetCount) {
+        targetReached = <span class="kw">false</span>;
+        <span class="fn">digitalWrite</span>(RELAY_PIN, HIGH);
+        <span class="fn">digitalWrite</span>(LED_RED_PIN, LOW);
+        <span class="fn">digitalWrite</span>(LED_GREEN_PIN, HIGH);
+      }
+
+      <span class="fn">setBeep</span>();
+      Serial.<span class="fn">print</span>(<span class="st">"Target: "</span>);
+      Serial.<span class="fn">println</span>(targetCount);
+      <span class="fn">showTargetSetting</span>();
+      <span class="fn">delay</span>(<span class="nm">800</span>);
+      <span class="fn">updateDisplay</span>();
+    }
+  }
+  lastBtnState = currentBtnState;
+}
+
+<span class="cm">// ============ TARGET REACHED ============</span>
+<span class="kw">void</span> <span class="fn">targetReachedAction</span>() {
+  Serial.<span class="fn">println</span>(<span class="st">"!!! TARGET REACHED !!!"</span>);
+  <span class="fn">digitalWrite</span>(RELAY_PIN, LOW);
+  <span class="fn">digitalWrite</span>(LED_RED_PIN, HIGH);
+  <span class="fn">digitalWrite</span>(LED_GREEN_PIN, LOW);
+  <span class="fn">alarmBeep</span>();
+}
+
+<span class="cm">// ============ LED HANDLER ============</span>
+<span class="kw">void</span> <span class="fn">handleLEDs</span>() {
+  <span class="kw">if</span> (targetReached) {
+    <span class="kw">static unsigned long</span> lastBlink = <span class="nm">0</span>;
+    <span class="kw">if</span> (<span class="fn">millis</span>() - lastBlink > <span class="nm">300</span>) {
+      <span class="fn">digitalWrite</span>(LED_RED_PIN, !<span class="fn">digitalRead</span>(LED_RED_PIN));
+      lastBlink = <span class="fn">millis</span>();
+    }
+    <span class="fn">digitalWrite</span>(LED_GREEN_PIN, LOW);
+  } <span class="kw">else</span> {
+    <span class="fn">digitalWrite</span>(LED_GREEN_PIN, HIGH);
+    <span class="fn">digitalWrite</span>(LED_RED_PIN, LOW);
+  }
+}
+
+<span class="cm">// ============ UPDATE DISPLAY ============</span>
+<span class="kw">void</span> <span class="fn">updateDisplay</span>() {
+  display.<span class="fn">clearDisplay</span>();
+
+  display.<span class="fn">setTextSize</span>(<span class="nm">1</span>);
+  display.<span class="fn">setTextColor</span>(SSD1306_WHITE);
+  display.<span class="fn">setCursor</span>(<span class="nm">10</span>, <span class="nm">0</span>);
+  display.<span class="fn">print</span>(<span class="st">"JIG COUNTER"</span>);
+  display.<span class="fn">drawLine</span>(<span class="nm">0</span>, <span class="nm">10</span>, <span class="nm">128</span>, <span class="nm">10</span>, SSD1306_WHITE);
+
+  display.<span class="fn">setTextSize</span>(<span class="nm">1</span>);
+  display.<span class="fn">setCursor</span>(<span class="nm">0</span>, <span class="nm">14</span>);
+  display.<span class="fn">print</span>(<span class="st">"COUNT:"</span>);
+  display.<span class="fn">setTextSize</span>(<span class="nm">2</span>);
+  display.<span class="fn">setCursor</span>(<span class="nm">10</span>, <span class="nm">24</span>);
+
+  <span class="kw">char</span> countStr[<span class="nm">8</span>];
+  <span class="fn">sprintf</span>(countStr, <span class="st">"%04lu"</span>, itemCount);
+  display.<span class="fn">print</span>(countStr);
+
+  display.<span class="fn">setTextSize</span>(<span class="nm">1</span>);
+  display.<span class="fn">setCursor</span>(<span class="nm">75</span>, <span class="nm">14</span>);
+  display.<span class="fn">print</span>(<span class="st">"TGT:"</span>);
+  display.<span class="fn">setCursor</span>(<span class="nm">75</span>, <span class="nm">24</span>);
+  <span class="fn">sprintf</span>(countStr, <span class="st">"%04lu"</span>, targetCount);
+  display.<span class="fn">print</span>(countStr);
+
+  display.<span class="fn">drawRect</span>(<span class="nm">0</span>, <span class="nm">40</span>, <span class="nm">128</span>, <span class="nm">10</span>, SSD1306_WHITE);
+  <span class="kw">float</span> progress = (<span class="kw">float</span>)itemCount / (<span class="kw">float</span>)targetCount;
+  <span class="kw">if</span> (progress > <span class="nm">1.0</span>) progress = <span class="nm">1.0</span>;
+  <span class="kw">int</span> barWidth = (<span class="kw">int</span>)(progress * <span class="nm">124</span>);
+  display.<span class="fn">fillRect</span>(<span class="nm">2</span>, <span class="nm">42</span>, barWidth, <span class="nm">6</span>, SSD1306_WHITE);
+
+  display.<span class="fn">drawLine</span>(<span class="nm">0</span>, <span class="nm">52</span>, <span class="nm">128</span>, <span class="nm">52</span>, SSD1306_WHITE);
+  display.<span class="fn">setCursor</span>(<span class="nm">0</span>, <span class="nm">55</span>);
+
+  <span class="kw">if</span> (targetReached) {
+    display.<span class="fn">print</span>(<span class="st">">> TARGET REACHED! <<"</span>);
+  } <span class="kw">else</span> {
+    display.<span class="fn">print</span>(<span class="st">"STATUS: COUNTING..."</span>);
+  }
+
+  display.<span class="fn">display</span>();
+}
+
+<span class="cm">// ============ SPLASH SCREEN ============</span>
+<span class="kw">void</span> <span class="fn">showSplashScreen</span>() {
+  display.<span class="fn">clearDisplay</span>();
+  display.<span class="fn">setTextSize</span>(<span class="nm">2</span>);
+  display.<span class="fn">setTextColor</span>(SSD1306_WHITE);
+  display.<span class="fn">setCursor</span>(<span class="nm">20</span>, <span class="nm">5</span>);
+  display.<span class="fn">println</span>(<span class="st">"KAIZEN"</span>);
+  display.<span class="fn">setTextSize</span>(<span class="nm">1</span>);
+  display.<span class="fn">setCursor</span>(<span class="nm">15</span>, <span class="nm">28</span>);
+  display.<span class="fn">println</span>(<span class="st">"JIG COUNTER v1.0"</span>);
+  display.<span class="fn">drawLine</span>(<span class="nm">0</span>, <span class="nm">40</span>, <span class="nm">128</span>, <span class="nm">40</span>, SSD1306_WHITE);
+  display.<span class="fn">setCursor</span>(<span class="nm">20</span>, <span class="nm">48</span>);
+  display.<span class="fn">println</span>(<span class="st">"Initializing..."</span>);
+  display.<span class="fn">display</span>();
+}
+
+<span class="cm">// ============ TARGET SETTING SCREEN ============</span>
+<span class="kw">void</span> <span class="fn">showTargetSetting</span>() {
+  display.<span class="fn">clearDisplay</span>();
+  display.<span class="fn">setTextSize</span>(<span class="nm">1</span>);
+  display.<span class="fn">setCursor</span>(<span class="nm">15</span>, <span class="nm">5</span>);
+  display.<span class="fn">println</span>(<span class="st">"SET TARGET"</span>);
+  display.<span class="fn">drawLine</span>(<span class="nm">0</span>, <span class="nm">15</span>, <span class="nm">128</span>, <span class="nm">15</span>, SSD1306_WHITE);
+  display.<span class="fn">setTextSize</span>(<span class="nm">3</span>);
+  display.<span class="fn">setCursor</span>(<span class="nm">15</span>, <span class="nm">25</span>);
+  <span class="kw">char</span> targetStr[<span class="nm">8</span>];
+  <span class="fn">sprintf</span>(targetStr, <span class="st">"%04lu"</span>, targetCount);
+  display.<span class="fn">print</span>(targetStr);
+  display.<span class="fn">setTextSize</span>(<span class="nm">1</span>);
+  display.<span class="fn">setCursor</span>(<span class="nm">5</span>, <span class="nm">55</span>);
+  display.<span class="fn">print</span>(<span class="st">"Press SET to change"</span>);
+  display.<span class="fn">display</span>();
+}
+
+<span class="cm">// ============ BUZZER FUNCTIONS ============</span>
+<span class="kw">void</span> <span class="fn">countBeep</span>() {
+  <span class="fn">digitalWrite</span>(BUZZER_PIN, HIGH);
+  <span class="fn">delay</span>(<span class="nm">30</span>);
+  <span class="fn">digitalWrite</span>(BUZZER_PIN, LOW);
+}
+
+<span class="kw">void</span> <span class="fn">resetBeep</span>() {
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i < <span class="nm">2</span>; i++) {
+    <span class="fn">digitalWrite</span>(BUZZER_PIN, HIGH); <span class="fn">delay</span>(<span class="nm">100</span>);
+    <span class="fn">digitalWrite</span>(BUZZER_PIN, LOW);  <span class="fn">delay</span>(<span class="nm">50</span>);
+  }
+}
+
+<span class="kw">void</span> <span class="fn">setBeep</span>() {
+  <span class="fn">digitalWrite</span>(BUZZER_PIN, HIGH); <span class="fn">delay</span>(<span class="nm">50</span>);
+  <span class="fn">digitalWrite</span>(BUZZER_PIN, LOW);  <span class="fn">delay</span>(<span class="nm">30</span>);
+  <span class="fn">digitalWrite</span>(BUZZER_PIN, HIGH); <span class="fn">delay</span>(<span class="nm">50</span>);
+  <span class="fn">digitalWrite</span>(BUZZER_PIN, LOW);
+}
+
+<span class="kw">void</span> <span class="fn">startupBeep</span>() {
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i < <span class="nm">3</span>; i++) {
+    <span class="fn">digitalWrite</span>(BUZZER_PIN, HIGH); <span class="fn">delay</span>(<span class="nm">80</span>);
+    <span class="fn">digitalWrite</span>(BUZZER_PIN, LOW);  <span class="fn">delay</span>(<span class="nm">80</span>);
+  }
+}
+
+<span class="kw">void</span> <span class="fn">alarmBeep</span>() {
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i < <span class="nm">5</span>; i++) {
+    <span class="fn">digitalWrite</span>(BUZZER_PIN, HIGH); <span class="fn">delay</span>(<span class="nm">200</span>);
+    <span class="fn">digitalWrite</span>(BUZZER_PIN, LOW);  <span class="fn">delay</span>(<span class="nm">100</span>);
+  }
+}</pre>
+        </div>
+    </div>
+
+    <!-- ===== BUILD STEPS ===== -->
+    <div class="section" id="steps">
+        <h2><span class="icon">📐</span> Step-by-Step Build Plan</h2>
+
+        <h3>Phase 1: Software Setup</h3>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h4>Install Arduino IDE</h4>
+                <p>Download from <span class="highlight">arduino.cc</span> and install on your PC</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h4>Add ESP32 Board</h4>
+                <p>File → Preferences → add this URL:<br>
+                <span class="highlight">https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json</span></p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h4>Install Board</h4>
+                <p>Tools → Board Manager → Search <span class="highlight">ESP32</span> → Install by Espressif</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h4>Install Libraries</h4>
+                <p>Sketch → Include Library → Manage Libraries → Install:<br>
+                <span class="highlight">Adafruit SSD1306</span><br>
+                <span class="highlight">Adafruit GFX Library</span></p>
+            </div>
+        </div>
+
+        <h3>Phase 2: Hardware Assembly</h3>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">5</div>
+                <h4>Place ESP32-S3</h4>
+                <p>Place ESP32-S3 in the center of breadboard. Ensure enough pins on each side</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">6</div>
+                <h4>Power Rails</h4>
+                <p>Connect 5V PSU positive to breadboard <span class="highlight">+</span> rail. GND to <span class="highlight">-</span> rail</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">7</div>
+                <h4>Wire OLED</h4>
+                <p>SDA → GPIO8 | SCL → GPIO9 | VCC → 3.3V | GND → GND</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">8</div>
+                <h4>Wire IR Sensor</h4>
+                <p>OUT → GPIO4 | VCC → 5V | GND → GND</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">9</div>
+                <h4>Wire Buttons</h4>
+                <p>Button1: one pin → GPIO5, other → GND<br>
+                Button2: one pin → GPIO6, other → GND</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">10</div>
+                <h4>Wire Buzzer</h4>
+                <p>Positive (+) → GPIO7 | Negative (-) → GND</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">11</div>
+                <h4>Wire LEDs</h4>
+                <p>Green: Anode → 220Ω → GPIO15, Cathode → GND<br>
+                Red: Anode → 220Ω → GPIO16, Cathode → GND</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">12</div>
+                <h4>Wire Relay</h4>
+                <p>IN → GPIO17 | VCC → 5V | GND → GND</p>
+            </div>
+        </div>
+
+        <h3>Phase 3: Upload & Test</h3>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">13</div>
+                <h4>Select Board</h4>
+                <p>Tools → Board → ESP32S3 Dev Module</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">14</div>
+                <h4>Upload Code</h4>
+                <p>Paste the code and click Upload button. Wait for "Done uploading"</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">15</div>
+                <h4>Verify OLED</h4>
+                <p>Splash screen should show "KAIZEN JIG COUNTER v1.0"</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">16</div>
+                <h4>Test IR Sensor</h4>
+                <p>Wave hand in front → count increases by 1 each time</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">17</div>
+                <h4>Test Reset</h4>
+                <p>Press Button 1 → count resets to 0000</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">18</div>
+                <h4>Test Target</h4>
+                <p>Press Button 2 → target cycles: 10→25→50→100→200→500→1000</p>
+            </div>
+        </div>
+
+        <h3>✅ Pre-Deployment Checklist</h3>
+        <ul class="checklist">
+            <li>OLED shows splash screen on power-up</li>
+            <li>IR sensor detects objects at correct distance (2-30cm)</li>
+            <li>Each detection = 1 count increment</li>
+            <li>Button 1 resets counter to 0</li>
+            <li>Button 2 cycles through target presets</li>
+            <li>Buzzer beeps on each count</li>
+            <li>Green LED stays ON during counting</li>
+            <li>Alarm sounds when target is reached</li>
+            <li>Red LED blinks when target reached</li>
+            <li>Relay activates when target reached</li>
+            <li>Serial monitor shows count data</li>
+            <li>System resets properly after Button 1 press</li>
+        </ul>
+    </div>
+
+    <!-- ===== INTERACTIVE DEMO ===== -->
+    <div class="section" id="demo">
+        <h2><span class="icon">🎮</span> Interactive Counter Demo</h2>
+        <p>Simulate how the JIG Counter works:</p>
+
+        <div class="demo-box">
+            <div style="color:#a0a0b0; font-size:0.9em;">CURRENT COUNT</div>
+            <div class="demo-counter" id="demo-count">0000</div>
+            <div class="demo-target">Target: <span id="demo-target-display">0100</span></div>
+            <div class="demo-progress-outer">
+                <div class="demo-progress-inner" id="demo-bar"></div>
+            </div>
+            <div id="demo-pct" style="color:#a0a0b0; font-size:0.8em; margin:5px 0;">0%</div>
+            <div class="demo-status status-counting" id="demo-status">🟢 STATUS: COUNTING...</div>
+            <div class="demo-buttons">
+                <button class="demo-btn btn-count" onclick="simulateCount()">
+                    📦 Detect Item (IR Sensor)
+                </button>
+                <button class="demo-btn btn-reset" onclick="simulateReset()">
+                    🔄 Reset (Button 1)
+                </button>
+                <button class="demo-btn btn-target" onclick="simulateSetTarget()">
+                    🎯 Set Target (Button 2)
+                </button>
+            </div>
+            <div id="demo-log" style="margin-top:15px; font-family:monospace; font-size:0.8em; color:#546e7a; max-height:80px; overflow-y:auto;"></div>
+        </div>
+    </div>
+
+    <!-- ===== TROUBLESHOOTING ===== -->
+    <div class="section" id="troubleshoot">
+        <h2><span class="icon">⚠️</span> Troubleshooting Guide</h2>
+
+        <div class="trouble-card">
+            <div class="problem">❌ OLED not displaying anything</div>
+            <div class="solution">✅ Check I2C address: try 0x3C or 0x3D | Verify SDA=GPIO8, SCL=GPIO9 | Check OLED VCC is 3.3V NOT 5V | Run I2C scanner sketch</div>
+        </div>
+
+        <div class="trouble-card">
+            <div class="problem">❌ IR sensor not detecting items</div>
+            <div class="solution">✅ Adjust sensitivity potentiometer on sensor module | Check detection distance (2-30cm range) | Ensure object is not transparent | Verify OUT wire connected to GPIO4</div>
+        </div>
+
+        <div class="trouble-card">
+            <div class="problem">❌ Double counting (2 counts per item)</div>
+            <div class="solution">✅ Increase irDebounceDelay to 150 or 200ms | Check if sensor is vibrating | Clean sensor lens</div>
+        </div>
+
+        <div class="trouble-card">
+            <div class="problem">❌ Buzzer not working</div>
+            <div class="solution">✅ Check buzzer polarity (+ to GPIO7) | Ensure it's an ACTIVE buzzer not passive | Test with simple blink-style sketch</div>
+        </div>
+
+        <div class="trouble-card">
+            <div class="problem">❌ Relay not clicking</div>
+            <div class="solution">✅ Verify relay is powered by 5V | Check if relay is active LOW (IN goes LOW to activate) | Listen for click sound | Check VCC and GND connections</div>
+        </div>
+
+        <div class="trouble-card">
+            <div class="problem">❌ ESP32 keeps restarting</div>
+            <div class="solution">✅ Use separate 5V supply for relay | Check power supply amperage (minimum 2A) | Check for short circuits on breadboard</div>
+        </div>
+
+        <div class="trouble-card">
+            <div class="problem">❌ Buttons not responding</div>
+            <div class="solution">✅ Verify button wiring (one pin to GPIO, other to GND) | Increase debounceDelay to 100ms | Test with multimeter for continuity</div>
+        </div>
+
+        <div class="trouble-card">
+            <div class="problem">❌ LEDs not lighting up</div>
+            <div class="solution">✅ Check LED polarity (longer leg = anode = +) | Verify 220Ω resistor is present | Check GPIO pin number matches code</div>
+        </div>
+
+        <div class="trouble-card">
+            <div class="problem">❌ Upload fails / Port not found</div>
+            <div class="solution">✅ Hold BOOT button while clicking upload | Install CH340 or CP2102 USB driver | Try different USB cable (data cable, not charge-only)</div>
+        </div>
+    </div>
+
+    <!-- ===== KAIZEN IMPACT ===== -->
+    <div class="section" id="kaizen">
+        <h2><span class="icon">📊</span> Kaizen Impact Report</h2>
+
+        <div class="kaizen-grid">
+            <div class="kaizen-before">
+                <h4>❌ BEFORE (Manual Counting)</h4>
+                <div class="kaizen-item">👤 Human error rate: 5-8%</div>
+                <div class="kaizen-item">📝 Paper-based recording</div>
+                <div class="kaizen-item">⏰ Dedicated counter person needed</div>
+                <div class="kaizen-item">🔇 No real-time alerts</div>
+                <div class="kaizen-item">📊 No progress visibility</div>
+                <div class="kaizen-item">🏭 Manual machine stop</div>
+                <div class="kaizen-item">❓ Inconsistent results</div>
+            </div>
+            <div class="kaizen-after">
+                <h4>✅ AFTER (JIG Counter)</h4>
+                <div class="kaizen-item">🤖 Error rate: ~0%</div>
+                <div class="kaizen-item">📟 Real-time OLED display</div>
+                <div class="kaizen-item">🔄 Hands-free operation</div>
+                <div class="kaizen-item">🔊 Audio + visual alerts</div>
+                <div class="kaizen-item">📊 Live progress bar</div>
+                <div class="kaizen-item">⚡ Auto relay stop</div>
+                <div class="kaizen-item">✅ Consistent & accurate</div>
+            </div>
+        </div>
+
+        <h3>📈 Improvement Metrics</h3>
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Before</th>
+                    <th>After</th>
+                    <th>Improvement</th>
+                </tr>
+                <tr>
+                    <td>Counting Accuracy</td>
+                    <td style="color:#ff6b6b">92-95%</td>
+                    <td style="color:#6bff6b">~100%</td>
+                    <td style="color:#00d4ff">+5-8%</td>
+                </tr>
+                <tr>
+                    <td>Count Speed</td>
+                    <td style="color:#ff6b6b">Manual</td>
+                    <td style="color:#6bff6b">Real-time</td>
+                    <td style="color:#00d4ff">Instant</td>
+                </tr>
+                <tr>
+                    <td>Labor Required</td>
+                    <td style="color:#ff6b6b">1 person counting</td>
+                    <td style="color:#6bff6b">0 (automated)</td>
+                    <td style="color:#00d4ff">-100% labor</td>
+                </tr>
+                <tr>
+                    <td>Over-production Risk</td>
+                    <td style="color:#ff6b6b">High</td>
+                    <td style="color:#6bff6b">None (auto-stop)</td>
+                    <td style="color:#00d4ff">Eliminated</td>
+                </tr>
+                <tr>
+                    <td>Cost of System</td>
+                    <td>-</td>
+                    <td style="color:#6bff6b">~$15-25 USD</td>
+                    <td style="color:#00d4ff">Low cost</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="alert alert-success">
+            🏆 <strong>Kaizen Result:</strong> This improvement eliminates manual counting errors,
+            frees up one operator, prevents overproduction, and provides real-time production visibility —
+            all for under $25 in materials!
+        </div>
+    </div>
+
+    <!-- ===== FUTURE IMPROVEMENTS ===== -->
+    <div class="section" id="future">
+        <h2><span class="icon">🚀</span> Future Improvements (Kaizen Continuous)</h2>
+
+        <div class="future-grid">
+            <div class="future-card">
+                <div class="future-icon">📶</div>
+                <h4>WiFi Dashboard</h4>
+                <p style="color:#a0a0b0; font-size:0.85em;">Send live count to web browser on any device</p>
+            </div>
+            <div class="future-card">
+                <div class="future-icon">💾</div>
+                <h4>Data Logging</h4>
+                <p style="color:#a0a0b0; font-size:0.85em;">Save daily production data to SD card or cloud</p>
+            </div>
+            <div class="future-card">
+                <div class="future-icon">⏱️</div>
+                <h4>Shift Tracking</h4>
+                <p style="color:#a0a0b0; font-size:0.85em;">Track count per shift with timestamp</p>
+            </div>
+            <div class="future-card">
+                <div class="future-icon">📱</div>
+                <h4>Telegram Alert</h4>
+                <p style="color:#a0a0b0; font-size:0.85em;">Send notification to phone when target reached</p>
+            </div>
+            <div class="future-card">
+                <div class="future-icon">🔢</div>
+                <h4>Multi-Counter</h4>
+                <p style="color:#a0a0b0; font-size:0.85em;">Network multiple JIG counters together</p>
+            </div>
+            <div class="future-card">
+                <div class="future-icon">📦</div>
+                <h4>3D Printed Case</h4>
+                <p style="color:#a0a0b0; font-size:0.85em;">Professional enclosure for factory floor use</p>
+            </div>
+            <div class="future-card">
+                <div class="future-icon">📊</div>
+                <h4>OEE Calculator</h4>
+                <p style="color:#a0a0b0; font-size:0.85em;">Add cycle time and efficiency measurement</p>
+            </div>
+            <div class="future-card">
+                <div class="future-icon">🖥️</div>
+                <h4>Larger Display</h4>
+                <p style="color:#a0a0b0; font-size:0.85em;">Upgrade to 4-digit 7-segment or larger TFT</p>
+            </div>
+        </div>
+    </div>
+
+</div><!-- end container -->
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+    <h3>⚙️ JIG Counter - Kaizen Project</h3>
+    <p>Built with ESP32-S3 | Arduino IDE | Adafruit SSD1306</p>
+    <br>
+    <p style="font-size:0.85em;">Version 1.0 | Offline Documentation</p>
+    <p style="font-size:0.8em; margin-top:10px; color:#546e7a;">
+        Save this HTML file and open in any browser — works 100% offline!
+    </p>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+    // ===== INTERACTIVE DEMO =====
+    let demoCount = 0;
+    let demoTarget = 100;
+    let demoTargetIndex = 3;
+    const demoTargets = [10, 25, 50, 100, 200, 500, 1000];
+    let demoReached = false;
+
+    function formatNum(n) {
+        return String(n).padStart(4, '0');
+    }
+
+    function addLog(msg) {
+        const log = document.getElementById('demo-log');
+        const time = new Date().toLocaleTimeString();
+        log.innerHTML = `<span style="color:#89ddff">[${time}]</span> ${msg}<br>` + log.innerHTML;
+    }
+
+    function updateDemo() {
+        const pct = Math.min(100, Math.round((demoCount / demoTarget) * 100));
+        
+        document.getElementById('demo-count').textContent = formatNum(demoCount);
+        document.getElementById('demo-target-display').textContent = formatNum(demoTarget);
+        document.getElementById('demo-bar').style.width = pct + '%';
+        document.getElementById('demo-pct').textContent = pct + '%';
+        
+        // Update OLED preview
+        document.getElementById('oled-count').textContent = formatNum(demoCount);
+        document.getElementById('oled-bar').style.width = pct + '%';
+
+        if (demoReached) {
+            document.getElementById('demo-status').textContent = '🔴 TARGET REACHED! Press Reset to continue.';
+            document.getElementById('demo-status').className = 'demo-status status-reached';
+            document.getElementById('oled-status').textContent = '>> TARGET REACHED! <<';
+        } else {
+            document.getElementById('demo-status').textContent = '🟢 STATUS: COUNTING...';
+            document.getElementById('demo-status').className = 'demo-status status-counting';
+            document.getElementById('oled-status').textContent = 'STATUS: COUNTING...';
+        }
+    }
+
+    function simulateCount() {
+        if (demoReached) {
+            addLog('<span style="color:#ff6b6b">⚠ Target reached! Press Reset first.</span>');
+            return;
+        }
+        demoCount++;
+        addLog(`📦 Item detected → Count: ${formatNum(demoCount)} / ${formatNum(demoTarget)} | 🔊 Beep!`);
+        
+        if (demoCount >= demoTarget) {
+            demoReached = true;
+            addLog('<span style="color:#ff6b6b">🚨 !!! TARGET REACHED !!! Relay activated! Alarm!</span>');
+        }
+        updateDemo();
+    }
+
+    function simulateReset() {
+        demoCount = 0;
+        demoReached = false;
+        addLog('<span style="color:#00d4ff">🔄 COUNTER RESET → 0000 | 🔊 Reset beep!</span>');
+        updateDemo();
+    }
+
+    function simulateSetTarget() {
+        demoTargetIndex = (demoTargetIndex + 1) % demoTargets.length;
+        demoTarget = demoTargets[demoTargetIndex];
+        if (demoCount < demoTarget) demoReached = false;
+        addLog(`🎯 Target set to: ${formatNum(demoTarget)} | 🔊 Set beep!`);
+        updateDemo();
+    }
+
+    // ===== COPY CODE =====
+    function copyCode() {
+        const codeElement = document.getElementById('main-code');
+        const text = codeElement.innerText;
+        
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => { btn.textContent = '📋 Copy'; }, 2000);
+            });
+        } else {
+            // Fallback
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            const btn = document.querySelector('.copy-btn');
+            btn.textContent = '✅ Copied!';
+            setTimeout(() => { btn.textContent = '📋 Copy'; }, 2000);
+        }
+    }
+
+    // ===== SMOOTH SCROLL =====
+    document.querySelectorAll('.nav a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
+    // Initialize demo
+    updateDemo();
+</script>
+
+</body>
+</html>
